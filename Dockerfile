@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Cài deps trước để tận dụng cache
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 
 # Copy mã nguồn
