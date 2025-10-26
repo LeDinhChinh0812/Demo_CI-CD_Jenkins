@@ -1,6 +1,9 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        - BUILD_REV=${BUILD_REV}
     container_name: demo_web
     ports:
       - "8081:3000"

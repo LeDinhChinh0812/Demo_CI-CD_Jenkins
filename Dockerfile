@@ -1,14 +1,11 @@
 FROM node:20-alpine
 WORKDIR /app
 
-# Cài deps trước để tận dụng cache
+ARG BUILD_REV=dev
+LABEL build_rev=$BUILD_REV
+
 COPY package*.json ./
 RUN npm install --omit=dev
-
-
-# Copy mã nguồn
 COPY . .
-
-
 EXPOSE 3000
 CMD ["node", "src/server.js"]

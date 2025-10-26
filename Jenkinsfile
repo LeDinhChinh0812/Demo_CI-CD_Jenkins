@@ -4,28 +4,29 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      steps {
-        checkout scm
-      }
+      steps { checkout scm }
     }
 
     stage('Validate Compose') {
       steps {
-        powershell 'docker compose version'
-        powershell 'docker compose config'   // fail sớm nếu YAML sai
+        powershell 'docker compose config'
       }
     }
 
     stage('Docker Build') {
       steps {
-        powershell 'docker compose build'
+        powershell '''
+          $env:BUILD_REV = $env:GIT_COMMIT
+          docker compose build --pull
+        '''
       }
     }
 
     stage('Deploy') {
       steps {
         powershell '''
-          docker compose up -d
+          $env:BUILD_REV = $env:GIT_COMMIT
+          docker compose up -d --force-recreate --remove-orphans
           docker image prune -f
         '''
       }
