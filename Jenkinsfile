@@ -12,11 +12,6 @@ timestamps()
 }
 
 
-// Nếu bạn dùng webhook thực: bỏ pollSCM. Nếu không có webhook, để nguyên.
-triggers {
-pollSCM('H/2 * * * *') // kiểm tra 2 phút/lần cho demo
-}
-
 
 stages {
 stage('Checkout') {
@@ -25,7 +20,7 @@ sshagent (credentials: [env.GIT_CRED]) {
 checkout([$class: 'GitSCM',
 branches: [[name: '*/main']],
 userRemoteConfigs: [[
-url: 'https://github.com/LeDinhChinh0812/Demo_CI-CD_Jenkins',
+url: 'git@github.com:LeDinhChinh0812/Demo_CI-CD_Jenkins.git',
 credentialsId: env.GIT_CRED
 ]]
 ])
