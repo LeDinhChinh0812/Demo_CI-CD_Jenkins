@@ -4,19 +4,25 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      steps { checkout scm }
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Validate Compose') {
+      steps {
+        powershell 'docker compose version'
+        powershell 'docker compose config'   // fail sớm nếu YAML sai
+      }
     }
 
     stage('Docker Build') {
-  steps {
-    powershell 'pwd; ls'
-    powershell 'Write-Host "--- docker-compose.yml ---"; Get-Content -Raw docker-compose.yml'
-    powershell 'docker compose config'   
-    powershell 'docker compose build'
-  }
-}
+      steps {
+        powershell 'docker compose build'
+      }
+    }
 
-    stage('Deploy (Docker Compose Up)') {
+    stage('Deploy') {
       steps {
         powershell '''
           docker compose up -d
@@ -27,6 +33,6 @@ pipeline {
   }
 
   post {
-    success { echo "App: http://localhost:8081" }
+    success { echo 'App: http://localhost:8081' }
   }
 }
