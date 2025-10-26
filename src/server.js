@@ -3,7 +3,7 @@ const PORT = 3000;
 
 
 const server = http.createServer((req, res) => {
-res.end(`Hello Jenkins! Build time: ${new Date().toISOString()}\n`);
+res.end(`CI/CD with Jenkins successful! Build time: ${new Date().toISOString()}\n`);
 });
 
 
