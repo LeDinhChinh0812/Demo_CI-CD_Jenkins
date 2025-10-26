@@ -8,14 +8,13 @@ pipeline {
     }
 
     stage('Docker Build') {
-      steps {
-        powershell '''
-          docker version
-          docker compose version
-          docker compose build
-        '''
-      }
-    }
+  steps {
+    powershell 'pwd; ls'
+    powershell 'Write-Host "--- docker-compose.yml ---"; Get-Content -Raw docker-compose.yml'
+    powershell 'docker compose config'   
+    powershell 'docker compose build'
+  }
+}
 
     stage('Deploy (Docker Compose Up)') {
       steps {
